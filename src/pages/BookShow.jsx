@@ -8,6 +8,7 @@ const BookShow = () => {
     const { isbn } = useParams();
 
     const [book, setBook] = useState(null);
+    const [reservedIsbns, setReservedIsbns] = useState([]);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -22,7 +23,26 @@ const BookShow = () => {
                 console.error('Błąd podczas ładowania książek:', error);
             }
         };
+        const fetchLoans = async () => {
+            try {
+                const token=localStorage.getItem('token');
+                const response = await fetch('http://localhost:3000/loans', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) throw new Error('Błąd podczas ładowania wypożyczeń: ' + response.statusText);
+                const loans = await response.json();
+                const reserved = loans
+                    .filter(loan => loan.status === 'reserved')
+                    .map(loan => loan.book.isbn);
+                setReservedIsbns(reserved);
+            } catch (error) {
+                console.error('Błąd podczas ładowania wypożyczeń:', error);
+            }
+        };
 
+        fetchLoans();
         fetchBook();
     }, [isbn]);
 
@@ -62,15 +82,13 @@ const BookShow = () => {
                 </div>
 
                 <div style={{ marginTop: "20px" }}>
-                    <Link to={`/books/${book.isbn}`} className="btn btn-primary" style={{ marginRight: '8px' }}>
-                        Zobacz
-                    </Link>
+
                     {isAdmin() && (
                         <Link to={`/books/${book.isbn}/update`} className="btn btn-warning" style={{ marginRight: '8px' }}>
                             Edytuj
                         </Link>
                     )}
-                    {isUser() && (
+                    {isUser() && !reservedIsbns.includes(book.isbn) && (
                         <ReserveBookButton isbn={book.isbn} />
                     )}
                     {isAdmin() && (

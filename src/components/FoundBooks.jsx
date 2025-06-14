@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {isAdmin, isUser} from "./checkRoles.jsx";
 import DeleteAuthorButton from "../components/DeleteAuthorButton.jsx";
@@ -6,6 +6,32 @@ import DeleteBookButton from "../components/DeleteBookButton.jsx";
 import ReserveBookButton from "../components/ReserveBookButton.jsx";
 
 const FoundBooks = ({books,onDelete}) => {
+    const [reservedIsbns, setReservedIsbns] = useState([]);
+
+    useEffect(()=>{
+    const fetchLoans = async () => {
+        try {
+            const token=localStorage.getItem('token');
+            const response = await fetch('http://localhost:3000/loans', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) throw new Error('Błąd podczas ładowania wypożyczeń: ' + response.statusText);
+            const loans = await response.json();
+            const reserved = loans
+                .filter(loan => loan.status === 'reserved')
+                .map(loan => loan.book.isbn);
+            setReservedIsbns(reserved);
+        } catch (error) {
+            console.error('Błąd podczas ładowania wypożyczeń:', error);
+        }
+    };
+
+    fetchLoans();
+
+
+}, []);
 
     return (
         <>
@@ -30,7 +56,7 @@ const FoundBooks = ({books,onDelete}) => {
                                 <Link to={`/books/${book.isbn}/update`} className="btn btn-warning">Edytuj</Link>
 
                             )}
-                            {isUser() && (
+                            {isUser() && !reservedIsbns.includes(book.isbn)&& (
                                 <ReserveBookButton
                                     isbn={book.isbn}
                                 />

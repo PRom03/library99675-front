@@ -7,6 +7,7 @@ import ReserveBookButton from "../components/ReserveBookButton.jsx";
 
 const BooksIndex = () => {
     const [books, setBooks] = useState([]);
+    const [reservedIsbns, setReservedIsbns] = useState([]);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -21,6 +22,27 @@ const BooksIndex = () => {
                 console.error('Błąd podczas ładowania książek:', error);
             }
         };
+        const fetchLoans = async () => {
+            try {
+                const token=localStorage.getItem('token');
+                const response = await fetch('http://localhost:3000/loans', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) throw new Error('Błąd podczas ładowania wypożyczeń: ' + response.statusText);
+                const loans = await response.json();
+                const reserved = loans
+                    .filter(loan => loan.status === 'reserved')
+                    .map(loan => loan.book.isbn);
+                setReservedIsbns(reserved);
+            } catch (error) {
+                console.error('Błąd podczas ładowania wypożyczeń:', error);
+            }
+        };
+
+            fetchLoans();
+
 
         fetchBooks();
     }, []);
@@ -51,7 +73,7 @@ const BooksIndex = () => {
                                 <Link to={`/books/${book.isbn}/update`} className="btn btn-warning">Edytuj</Link>
 
                             )}
-                            {isUser() && (
+                            {isUser() && !reservedIsbns.includes(book.isbn)&& (
                                 <ReserveBookButton
                                     isbn={book.isbn}
                                     />

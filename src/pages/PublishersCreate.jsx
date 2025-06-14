@@ -9,12 +9,10 @@ const PublishersCreate = () => {
     const validate = () => {
         const newErrors = {};
 
-        // Nazwa: min 2 znaki
         if (!name || name.trim().length < 2) {
             newErrors.name = 'Nazwa wydawcy musi mieć co najmniej 2 znaki.';
         }
 
-        // Źródło obrazu: opcjonalne, ale jeśli podane, to musi być poprawny URL (proste sprawdzenie)
         if (imageSource.trim()) {
             try {
                 new URL(imageSource);

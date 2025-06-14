@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
-import HomePage from './pages/HomePage.jsx';
 import BooksIndex from './pages/BooksIndex.jsx';
 import BooksCreate from './pages/BooksCreate.jsx';
 import BooksUpdate from './pages/BooksUpdate.jsx';
@@ -33,30 +32,34 @@ function App() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Layout />} />
-                    <Route path="books" element={<BooksIndex />} />
-                    <Route path="authors" element={<AuthorsIndex />} />
-                    <Route path="publishers" element={<PublishersIndex />} />
+
                     <Route path="publishers/create" element={<PublishersCreate />} />
                     <Route path="categories/create" element={<CategoriesCreate />} />
 
-                    <Route path="categories" element={<CategoriesIndex />} />
                      <Route path="books/create" element={<BooksCreate />} />
                     <Route path="books/:isbn/update" element={<BooksUpdate />} />
-                    <Route path="books/:isbn" element={<BookShow />} />
 
-                    <Route path="login" element={<LoginPage />} />
-                    <Route path="register" element={<RegisterPage />} />
+
                     <Route path="panel" element={<UserPanel />} />
                     <Route path="loans" element={<LoansIndex />} />
                     <Route path="me/edit" element={<EditProfile />} />
                     <Route path="authors/create" element={<AuthorsCreate />} />
                     <Route path="authors/:_id/update" element={<AuthorsUpdate />} />
-                    <Route path="authors/:_id" element={<AuthorShow />} />
                     <Route path="publishers/:_id/update" element={<PublishersUpdate />} />
                     <Route path="categories/:_id/update" element={<CategoriesUpdate />} />
                     <Route path="search" element={<SearchPage />} />
                     <Route path="recommended" element={<RecommendedBooks />} />/
+                    <Route path="books" element={<BooksIndex />} />
+                    <Route path="authors" element={<AuthorsIndex />} />
+                    <Route path="publishers" element={<PublishersIndex />} />
+                    <Route path="books/:isbn" element={<BookShow />} />
+                    <Route path="authors/:_id" element={<AuthorShow />} />
+                    <Route path="categories" element={<CategoriesIndex />} />
                 </Route>
+                <Route path="login" element={<LoginPage />} />
+                <Route path="register" element={<RegisterPage />} />
+
+
             </Routes>
         </BrowserRouter>
     );

@@ -11,7 +11,6 @@ const AuthorsCreate = () => {
     const validate = () => {
         const newErrors = {};
 
-        // Imię i nazwisko: tylko litery, min 2 znaki
         const nameRegex = /^[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż-]{2,}$/;
         if (!nameRegex.test(firstName)) {
             newErrors.firstName = 'Imię musi mieć co najmniej 2 litery (tylko litery).';
@@ -20,13 +19,11 @@ const AuthorsCreate = () => {
             newErrors.lastName = 'Nazwisko musi mieć co najmniej 2 litery (tylko litery).';
         }
 
-        // Rok urodzenia: liczba 1800-2025
         const year = parseInt(birthYear, 10);
         if (!birthYear || isNaN(year) || year < 1800 || year > 2025) {
             newErrors.birthYear = 'Rok urodzenia musi być liczbą z zakresu 1800-2025.';
         }
 
-        // Źródło obrazu: pusty lub poprawny URL (prosty regex)
         if (imageSource) {
             const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/i;
             if (!urlRegex.test(imageSource)) {
@@ -34,7 +31,6 @@ const AuthorsCreate = () => {
             }
         }
 
-        // Notka biograficzna: min 10 znaków
         if (!briefBio || briefBio.length < 10) {
             newErrors.briefBio = 'Notka biograficzna musi mieć co najmniej 10 znaków.';
         }
@@ -73,7 +69,6 @@ const AuthorsCreate = () => {
 
             const data = await response.json();
             setMessage('Autor został dodany!');
-            // Wyczyść formularz
             setFirstName('');
             setLastName('');
             setImageSource('');

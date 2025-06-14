@@ -16,7 +16,7 @@ const DeleteBookButton = ({ isbn, onDeleted }) => {
             if (!res.ok) throw new Error('Błąd podczas usuwania książki');
 
             alert('Książka została usunięta.');
-            if (onDeleted) onDeleted(); // np. odświeżenie listy
+            if (onDeleted) onDeleted();
 
         } catch (err) {
             console.error(err);

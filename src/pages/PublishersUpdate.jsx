@@ -14,7 +14,6 @@ const PublishersUpdate = () => {
     const validate = () => {
         const newErrors = {};
 
-        // Nazwa: min 2 znaki
         if (!name || name.trim().length < 2) {
             newErrors.name = 'Nazwa wydawcy musi mieć co najmniej 2 znaki.';
         }
@@ -69,7 +68,7 @@ if(!validate()) return;
             });
 
             if (!response.ok) throw new Error('Błąd podczas zapisu');
-            navigate(`/publishers/${_id}`);
+            navigate(`/publishers`);
         } catch (error) {
             console.error('Błąd podczas aktualizacji wydawcy:', error);
         }

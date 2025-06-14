@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useNavigate} from "react-router-dom";
 
 const BooksCreate = () => {
     const [title, setTitle] = useState('');
@@ -13,45 +14,37 @@ const BooksCreate = () => {
     const [categories, setCategories] = useState([]);
     const [message, setMessage] = useState('');
     const [errors, setErrors] = useState({});
-
+    const navigate = useNavigate();
     const validate = () => {
         const newErrors = {};
 
-        // ISBN: 10 lub 13 cyfr, można też z myślnikami, uproszczony regex
-        const isbnRegex = /^(?:\d{9}[\dXx]|\d{13})$/;
-        const cleanIsbn = isbn.replace(/-/g, ''); // usuń myślniki przed walidacją
-        if (!isbn || !isbnRegex.test(cleanIsbn)) {
+        const isbnRegex = /^(\d{13})$/;
+        if (!isbn || !isbnRegex.test(isbn)) {
             newErrors.isbn = 'ISBN musi mieć 10 lub 13 cyfr (bez myślników).';
         }
 
-        // Tytuł: min 2 znaki
         if (!title || title.length < 2) {
             newErrors.title = 'Tytuł musi mieć co najmniej 2 znaki.';
         }
 
-        // Rok wydania: liczba od 1500 do 2025
         const year = parseInt(year_of_publication, 10);
         if (!year_of_publication || isNaN(year) || year < 1500 || year > 2025) {
             newErrors.year_of_publication = 'Rok wydania musi być liczbą od 1500 do 2025.';
         }
 
-        // Dostępnych: liczba całkowita >= 0
         const availableInt = parseInt(available, 10);
         if (available === '' || isNaN(availableInt) || availableInt < 0) {
             newErrors.available = 'Dostępnych musi być liczbą całkowitą nieujemną.';
         }
 
-        // Autor: wybrany
         if (!authorId) {
             newErrors.authorId = 'Proszę wybrać autora.';
         }
 
-        // Wydawca: wybrany
         if (!publisherId) {
             newErrors.publisherId = 'Proszę wybrać wydawcę.';
         }
 
-        // Kategoria: wybrana
         if (!categoryId) {
             newErrors.categoryId = 'Proszę wybrać kategorię.';
         }
@@ -114,7 +107,6 @@ const BooksCreate = () => {
 
             const data = await response.json();
             setMessage('Książka została dodana!');
-            // Wyczyść formularz
             setTitle('');
             setAuthorId('');
             setPublisherId('');
@@ -122,6 +114,8 @@ const BooksCreate = () => {
             setAvailable('');
             set_year_of_publication('');
             setCategoryId('');
+            navigate(`/books/${isbn}`);
+
             console.log('Zapisano książkę:', data);
         } catch (error) {
             console.error('Błąd podczas dodawania książki:', error);

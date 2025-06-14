@@ -8,7 +8,6 @@ const CategoriesCreate = () => {
     const validate = () => {
         const newErrors = {};
 
-        // Nazwa: min 2 znaki
         if (!name || name.trim().length < 2) {
             newErrors.name = 'Nazwa kategorii musi mieć co najmniej 2 znaki.';
         }

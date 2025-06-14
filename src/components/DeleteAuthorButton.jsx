@@ -16,7 +16,7 @@ const DeleteAuthorButton = ({ authorId, onDeleted }) => {
             if (!res.ok) throw new Error('Błąd podczas usuwania autora');
 
             alert('Autor został usunięty.');
-            if (onDeleted) onDeleted(); // np. odświeżenie listy
+            if (onDeleted) onDeleted();
 
         } catch (err) {
             console.error(err);

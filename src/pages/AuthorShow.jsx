@@ -14,12 +14,12 @@ const AuthorShow = () => {
             try {
                 const response = await fetch(`http://localhost:3000/authors/${_id}`);
                 if (!response.ok) {
-                    throw new Error('Błąd podczas ładowania książek: ' + response.statusText);
+                    throw new Error('Błąd podczas ładowania autorów: ' + response.statusText);
                 }
                 const data = await response.json();
                 setAuthor(data);
             } catch (error) {
-                console.error('Błąd podczas ładowania książek:', error);
+                console.error('Błąd podczas ładowania autorów:', error);
             }
         };
 
@@ -49,9 +49,7 @@ const AuthorShow = () => {
                 </div>
 
                 <div style={{ marginTop: "20px" }}>
-                    <Link to={`/authors/${author._id}`} className="btn btn-primary" style={{ marginRight: '8px' }}>
-                        Zobacz
-                    </Link>
+
                     {isAdmin() && (
                         <Link to={`/authors/${author._id}/update`} className="btn btn-warning" style={{ marginRight: '8px' }}>
                             Edytuj

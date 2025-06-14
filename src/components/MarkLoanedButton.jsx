@@ -11,8 +11,7 @@ const MarkLoanedButton = ({ loanId, onSuccess }) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            const text = await res.text();
-            console.log('RAW RESPONSE:', text);
+
 
 
             const data = await res.json();
