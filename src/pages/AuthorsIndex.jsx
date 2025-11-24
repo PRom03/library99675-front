@@ -9,7 +9,7 @@ const AuthorsIndex = () => {
     useEffect(() => {
         const fetchAuthors = async () => {
             try {
-                const response = await fetch('http://localhost:3000/authors');
+                const response = await fetch('http://localhost:8080/api/authors');
                 if (!response.ok) {
                     throw new Error('Błąd podczas ładowania autorów: ' + response.statusText);
                 }

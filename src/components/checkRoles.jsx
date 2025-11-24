@@ -6,7 +6,7 @@ export function isAdmin()  {
         if (!token) return false;
         const decoded = jwtDecode(token);
         console.log(decoded);
-        return decoded.role === 'Admin';
+        return decoded.role === 'admin';
 }
 export function isUser()  {
 
@@ -14,7 +14,7 @@ export function isUser()  {
         if (!token) return false;
         const decoded = jwtDecode(token);
         console.log(decoded);
-        return decoded.role === 'User';
+        return decoded.role === 'client';
 }
 export function isLibrarian()  {
 
@@ -22,5 +22,5 @@ export function isLibrarian()  {
         if (!token) return false;
         const decoded = jwtDecode(token);
         console.log(decoded);
-        return decoded.role === 'assistant';
+        return decoded.role === 'librarian';
 }

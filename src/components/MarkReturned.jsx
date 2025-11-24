@@ -5,7 +5,7 @@ const MarkReturnedButton = ({ loanId, onSuccess }) => {
     const handleMarkReturned = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/loans/return/${loanId}`, {
+            const res = await fetch(`http://localhost:8080/api/loans/${loanId}/returned`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`}

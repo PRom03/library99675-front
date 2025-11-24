@@ -26,7 +26,7 @@ const CategoriesUpdate = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/categories/${_id}`);
+                const response = await fetch(`http://localhost:8080/api/categories/${_id}`);
                 if (!response.ok) throw new Error('Błąd podczas ładowania kategorii');
                 const category = await response.json();
 
@@ -49,7 +49,7 @@ if(!validate()) return;
 
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:3000/categories/${_id}`, {
+            const response = await fetch(`http://localhost:8080/api/categories/${_id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

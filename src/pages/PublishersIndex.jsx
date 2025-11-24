@@ -10,7 +10,7 @@ const PublishersIndex = () => {
     useEffect(() => {
         const fetchPublishers = async () => {
             try {
-                const response = await fetch('http://localhost:3000/publishers');
+                const response = await fetch('http://localhost:8080/api/publishers');
                 if (!response.ok) {
                     throw new Error('Błąd podczas ładowania wydawców: ' + response.statusText);
                 }

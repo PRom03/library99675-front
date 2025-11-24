@@ -6,7 +6,7 @@ const DeleteCategoryButton = ({ categoryId, onDeleted }) => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/categories/${categoryId}`, {
+            const res = await fetch(`http://localhost:8080/api/categories/${categoryId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

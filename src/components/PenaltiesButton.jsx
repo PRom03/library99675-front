@@ -6,7 +6,7 @@ const PenaltiesButton = ({ onSuccess }) => {
     const handlePenalties = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/loans/penalties`, {
+            const res = await fetch(`http://localhost:8080/api/loans/penalties`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

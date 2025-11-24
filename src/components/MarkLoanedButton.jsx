@@ -5,7 +5,7 @@ const MarkLoanedButton = ({ loanId, onSuccess }) => {
     const handleMarkLoaned = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/loans/loaned/${loanId}`, {
+            const res = await fetch(`http://localhost:8080/api/loans/${loanId}/loaned`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`

@@ -12,7 +12,7 @@ const FoundBooks = ({books,onDelete}) => {
     const fetchLoans = async () => {
         try {
             const token=localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/loans', {
+            const response = await fetch('http://localhost:8080/api/loans', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

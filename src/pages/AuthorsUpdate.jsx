@@ -49,7 +49,7 @@ const AuthorsUpdate = () => {
     useEffect(() => {
         const fetchAuthor = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/authors/${_id}`);
+                const response = await fetch(`http://localhost:8080/api/authors/${_id}`);
                 if (!response.ok) throw new Error('Błąd podczas ładowania autora');
                 const author = await response.json();
 
@@ -80,7 +80,7 @@ const AuthorsUpdate = () => {
 
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:3000/authors/${_id}`, {
+            const response = await fetch(`http://localhost:8080/api/authors/${_id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

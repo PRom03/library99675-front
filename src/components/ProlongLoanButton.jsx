@@ -6,7 +6,7 @@ const ProlongLoanButton = ({ loanId, onSuccess }) => {
     const handleProlong = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/loans/prolong/${loanId}`, {
+            const res = await fetch(`http://localhost:8080/api/loans/${loanId}/prolong`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,

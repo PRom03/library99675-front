@@ -3,7 +3,8 @@ import {Link, Outlet} from "react-router-dom";
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
-        name: '',
+        firstname: '',
+        lastname: '',
         email: '',
         password: ''
     });
@@ -24,7 +25,7 @@ const RegisterPage = () => {
         setMessage('');
 
         try {
-            const res = await fetch('http://localhost:3000/users/register', {
+            const res = await fetch('http://localhost:8080/api/users/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -39,7 +40,7 @@ const RegisterPage = () => {
             }
 
             setMessage('Rejestracja zakończona sukcesem! Możesz się teraz zalogować.');
-            setFormData({ name: '', email: '', password: '' });
+            setFormData({ firstname: '', lastname:'',email: '', password: '' });
         } catch (err) {
             setError(err.message);
         }
@@ -111,9 +112,20 @@ const RegisterPage = () => {
                 <div>
                     <input
                         type="text"
-                        name="name"
+                        name="firstname"
                         placeholder="Imię"
-                        value={formData.name}
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        pattern="^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+)?$"
+                        required
+                    />
+                </div>
+                <div>
+                    <input
+                        type="text"
+                        name="lastname"
+                        placeholder="Imię"
+                        value={formData.lastname}
                         onChange={handleChange}
                         pattern="^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+)?$"
                         required

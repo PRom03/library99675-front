@@ -33,7 +33,7 @@ const PublishersUpdate = () => {
     useEffect(() => {
         const fetchPublisher = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/publishers/${_id}`);
+                const response = await fetch(`http://localhost:8080/api/publishers/${_id}`);
                 if (!response.ok) throw new Error('Błąd podczas ładowania wydawcy');
                 const publisher = await response.json();
 
@@ -58,7 +58,7 @@ if(!validate()) return;
 
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:3000/publishers/${_id}`, {
+            const response = await fetch(`http://localhost:8080/api/publishers/${_id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

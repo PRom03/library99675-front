@@ -21,41 +21,34 @@ const BooksUpdate = () => {
     const validate = () => {
         const newErrors = {};
 
-        // ISBN: 10 lub 13 cyfr, można też z myślnikami, uproszczony regex
         const isbnRegex = /^(?:\d{9}[\dXx]|\d{13})$/;
-        const cleanIsbn = isbn.replace(/-/g, ''); // usuń myślniki przed walidacją
+        const cleanIsbn = isbn.replace(/-/g, '');
         if (!isbn || !isbnRegex.test(cleanIsbn)) {
             newErrors.isbn = 'ISBN musi mieć 10 lub 13 cyfr (bez myślników).';
         }
 
-        // Tytuł: min 2 znaki
         if (!title || title.length < 2) {
             newErrors.title = 'Tytuł musi mieć co najmniej 2 znaki.';
         }
 
-        // Rok wydania: liczba od 1500 do 2025
         const year = parseInt(year_of_publication, 10);
         if (!year_of_publication || isNaN(year) || year < 1500 || year > 2025) {
             newErrors.year_of_publication = 'Rok wydania musi być liczbą od 1500 do 2025.';
         }
 
-        // Dostępnych: liczba całkowita >= 0
         const availableInt = parseInt(available, 10);
         if (available === '' || isNaN(availableInt) || availableInt < 0) {
             newErrors.available = 'Dostępnych musi być liczbą całkowitą nieujemną.';
         }
 
-        // Autor: wybrany
         if (!authorId) {
             newErrors.authorId = 'Proszę wybrać autora.';
         }
 
-        // Wydawca: wybrany
         if (!publisherId) {
             newErrors.publisherId = 'Proszę wybrać wydawcę.';
         }
 
-        // Kategoria: wybrana
         if (!categoryId) {
             newErrors.categoryId = 'Proszę wybrać kategorię.';
         }
@@ -64,13 +57,12 @@ const BooksUpdate = () => {
 
         return Object.keys(newErrors).length === 0;
     };
-    // Ładowanie danych pomocniczych (autorzy, wydawcy, kategorie)
     useEffect(() => {
         const fetchSelectData = async () => {
             const [authorsRes, publishersRes, categoriesRes] = await Promise.all([
-                fetch('http://localhost:3000/authors'),
-                fetch('http://localhost:3000/publishers'),
-                fetch('http://localhost:3000/categories'),
+                fetch('http://localhost:8080/api/authors'),
+                fetch('http://localhost:8080/api/publishers'),
+                fetch('http://localhost:8080/api/categories'),
             ]);
 
             if (authorsRes.ok) setAuthors(await authorsRes.json());
@@ -81,17 +73,16 @@ const BooksUpdate = () => {
         fetchSelectData();
     }, []);
 
-    // Ładowanie danych książki
     useEffect(() => {
         const fetchBook = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/books/${isbn}`);
+                const response = await fetch(`http://localhost:8080/api/books/${isbn}`);
                 if (!response.ok) throw new Error('Błąd podczas ładowania książki');
                 const book = await response.json();
 
                 setTitle(book.title || '');
-                setAuthorId(book.author?._id || '');
-                setPublisherId(book.publisher?._id || '');
+                setAuthorId(book.author?.id || '');
+                setPublisherId(book.publisher?.id || '');
                 setIsbn(book.isbn || '');
                 setAvailable(book.available || 0);
                 setYearOfPublication(book.year_of_publication || '');
@@ -119,7 +110,7 @@ const BooksUpdate = () => {
 
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:3000/books/${isbn}`, {
+            const response = await fetch(`http://localhost:8080/api/books/${isbn}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

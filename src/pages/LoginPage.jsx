@@ -11,7 +11,7 @@ function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:3000/users/login', { email, password });
+            const res = await axios.post('http://localhost:8080/api/users/login', { email, password });
             localStorage.setItem('token', res.data.token);
             navigate('/');
         } catch (err) {

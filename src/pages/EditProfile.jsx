@@ -10,7 +10,7 @@ function EditProfile() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:3000/users/me', {
+        fetch('http://localhost:8080/api/users/me', {
             headers: { 'Authorization': `Bearer ${token}` }
         })
             .then(res => res.json())
@@ -26,7 +26,7 @@ function EditProfile() {
 
         const token = localStorage.getItem('token');
 
-        const res = await fetch('http://localhost:3000/users/me/edit', {
+        const res = await fetch('http://localhost:8080/api/users/me/edit', {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${token}`,

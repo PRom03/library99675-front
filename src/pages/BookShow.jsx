@@ -13,7 +13,7 @@ const BookShow = () => {
     useEffect(() => {
         const fetchBook = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/books/${isbn}`);
+                const response = await fetch(`http://localhost:8080/api/books/${isbn}`);
                 if (!response.ok) {
                     throw new Error('Błąd podczas ładowania książek: ' + response.statusText);
                 }
@@ -26,7 +26,7 @@ const BookShow = () => {
         const fetchLoans = async () => {
             try {
                 const token=localStorage.getItem('token');
-                const response = await fetch('http://localhost:3000/loans', {
+                const response = await fetch('http://localhost:8080/api/loans', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

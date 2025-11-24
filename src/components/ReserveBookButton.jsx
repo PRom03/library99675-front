@@ -5,7 +5,7 @@ const ReserveBookButton = ({ isbn, onSuccess }) => {
     const handleReserve = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/loans/`, {
+            const res = await fetch(`http://localhost:8080/api/loans`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

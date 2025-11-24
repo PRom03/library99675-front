@@ -12,7 +12,7 @@ const LoansIndex = () => {
         try {
             const token = localStorage.getItem('token');
             console.log(token);
-            const res = await fetch('http://localhost:3000/loans', {
+            const res = await fetch('http://localhost:8080/api/loans', {
                 headers: {
 
                     'Authorization': `Bearer ${token}`

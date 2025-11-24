@@ -15,7 +15,7 @@ function SearchPage() {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/search?q=${encodeURIComponent(query)}`);
+                const res = await fetch(`http://localhost:8080/api/search?q=${encodeURIComponent(query)}`);
                 const data = await res.json();
                 setResults(data);
             } catch (err) {

@@ -6,7 +6,7 @@ const CancelReservationButton = ({ loanId, onSuccess }) => {
     const handleCancel = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/loans/${loanId}`, {
+            const res = await fetch(`http://localhost:8080/api/loans/${loanId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

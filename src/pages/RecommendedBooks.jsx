@@ -14,7 +14,7 @@ function RecommendedBooks() {
     useEffect(() => {
         const fetchRecommended = async () => {
             try {
-                const res = await fetch('http://localhost:3000/recommended', {
+                const res = await fetch('http://localhost:8080/api/recommended', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },

@@ -57,9 +57,9 @@ const BooksCreate = () => {
         const fetchData = async () => {
             try {
                 const [authorsRes, publishersRes, categoriesRes] = await Promise.all([
-                    fetch('http://localhost:3000/authors'),
-                    fetch('http://localhost:3000/publishers'),
-                    fetch('http://localhost:3000/categories'),
+                    fetch('http://localhost:8080/api/authors'),
+                    fetch('http://localhost:8080/api/publishers'),
+                    fetch('http://localhost:8080/api/categories'),
                 ]);
 
                 const authorsData = await authorsRes.json();
@@ -92,7 +92,7 @@ const BooksCreate = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/books', {
+            const response = await fetch('http://localhost:8080/api/books', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

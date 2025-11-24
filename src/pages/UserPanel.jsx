@@ -10,7 +10,7 @@ function UserPanel() {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        fetch('http://localhost:3000/users/me', {
+        fetch('http://localhost:8080/api/users/me', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

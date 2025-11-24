@@ -28,7 +28,6 @@ import CategoriesCreate from "./pages/CategoriesCreate.jsx";
 
 function App() {
     return (
-        <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Layout />} />
@@ -61,7 +60,6 @@ function App() {
 
 
             </Routes>
-        </BrowserRouter>
     );
 }
 

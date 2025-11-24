@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, Navigate, Outlet, useNavigate} from 'react-router-dom';
+import {jwtDecode} from "jwt-decode";
 
 const Layout = () => {
     const token = localStorage.getItem('token');
@@ -9,7 +10,17 @@ const Layout = () => {
         localStorage.removeItem('token');
         navigate('/login');
     };
- if (!token) {
+    const isExpired=(token)=>{
+        if(!token) return true;
+        const {exp}=jwtDecode(token);
+        const curr=new Date().getTime()/1000;
+        console.log(exp+" "+curr);
+        if (exp <= curr ) {
+            return true;
+        }
+        return false;
+    }
+ if (!token || isExpired(token)) {
         return <Navigate to="/login" />;
     }
 

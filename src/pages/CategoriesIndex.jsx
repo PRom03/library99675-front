@@ -10,7 +10,7 @@ const CategoriesIndex = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost:3000/categories');
+                const response = await fetch('http://localhost:8080/api/categories');
                 if (!response.ok) {
                     throw new Error('Błąd podczas ładowania kategorii: ' + response.statusText);
                 }
