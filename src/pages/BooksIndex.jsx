@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {isAdmin, isUser} from "../components/checkRoles.jsx";
+import {checkRole} from "../components/checkRoles.jsx";
 import DeleteAuthorButton from "../components/DeleteAuthorButton.jsx";
 import DeleteBookButton from "../components/DeleteBookButton.jsx";
 import ReserveBookButton from "../components/ReserveBookButton.jsx";
@@ -8,11 +8,11 @@ import ReserveBookButton from "../components/ReserveBookButton.jsx";
 const BooksIndex = () => {
     const [books, setBooks] = useState([]);
     const [reservedIsbns, setReservedIsbns] = useState([]);
-
+    const [userRole, setUserRole] = useState("");
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/books');
+                const response = await fetch('http://localhost:8080/api/books/');
                 if (!response.ok) {
                     throw new Error('Błąd podczas ładowania książek: ' + response.statusText);
                 }
@@ -42,14 +42,17 @@ const BooksIndex = () => {
         };
 
             fetchLoans();
-
-
+        const checkUserRole= async()=>{
+            const role=await checkRole();
+            setUserRole(role);
+        }
+        checkUserRole();
         fetchBooks();
     }, []);
     return (
         <>
             <h1>Lista książek</h1>
-            {isAdmin() && (
+            {userRole==="admin"  && (
                 <Link to={`/books/create`} className="btn btn-primary">Dodaj książkę</Link>
 
             )}
@@ -63,22 +66,22 @@ const BooksIndex = () => {
                 </thead>
                 <tbody>
                 {books.map((book) => (
-                    <tr key={book._id}>
+                    <tr key={book.id}>
                         <td>{book.title}</td>
-                        <td>{book.author?.first_name} {book.author?.last_name}</td>
+                        <td>{book.author?.firstName} {book.author?.lastName}</td>
                         <td>{book.publisher?.name}</td>
                         <td>
                             <Link to={`/books/${book.isbn}`} className="btn btn-primary">Zobacz</Link>
-                            {isAdmin() && (
+                            {userRole==="admin" && (
                                 <Link to={`/books/${book.isbn}/update`} className="btn btn-warning">Edytuj</Link>
 
                             )}
-                            {isUser() && !reservedIsbns.includes(book.isbn)&& (
+                            {userRole==="client" && !reservedIsbns.includes(book.isbn)&& (
                                 <ReserveBookButton
                                     isbn={book.isbn}
                                     />
                             )}
-                            {isAdmin() && (
+                            {userRole==="admin"  && (
                                 <DeleteBookButton
                                     isbn={book.isbn}
                                     onDeleted={() =>

@@ -3,11 +3,12 @@ import CancelReservationButton from '../components/CancelReservationButton.jsx';
 import ProlongLoanButton from '../components/ProlongLoanButton.jsx';
 import PenaltiesButton from '../components/PenaltiesButton.jsx';
 import MarkReturned from "../components/MarkReturned.jsx";
-import {isLibrarian, isUser} from "../components/checkRoles.jsx";
+import {checkRole} from "../components/checkRoles.jsx";
 import MarkLoanedButton from "../components/MarkLoanedButton.jsx";
 
 const LoansIndex = () => {
     const [loans, setLoans] = useState([]);
+    const [userRole, setUserRole] = useState("");
     const fetchLoans = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -16,7 +17,7 @@ const LoansIndex = () => {
                 headers: {
 
                     'Authorization': `Bearer ${token}`
-                    // , 'Content-Type': 'application/json'
+                    , 'Content-Type': 'application/json'
                 }
             });
             if (!res.ok) {
@@ -29,7 +30,11 @@ const LoansIndex = () => {
         }
     };
     useEffect(() => {
-
+        const checkUserRole= async()=>{
+            const role=await checkRole();
+            setUserRole(role);
+        }
+        checkUserRole();
 
         fetchLoans();
     }, []);
@@ -37,7 +42,7 @@ const LoansIndex = () => {
     return (
         <>
             <h1>Wypożyczone książki:</h1>
-            {isLibrarian() && (
+            {userRole==="librarian" && (
                 <PenaltiesButton
                     onSuccess={fetchLoans}
                 />
@@ -55,36 +60,36 @@ const LoansIndex = () => {
                 </thead>
                 <tbody>
                 {loans.map((loan) => (
-                    <tr key={loan._id}>
+                    <tr key={loan.id}>
                         <td>{loan.title || loan.book?.title || '—'}</td>
-                        <td>{loan.loan_date ? new Date(loan.loan_date).toLocaleDateString() : '—'}</td>
-                        <td>{loan.return_date ? new Date(loan.return_date).toLocaleDateString() : '—'}</td>
+                        <td>{loan.loanDate ? new Date(loan.loanDate).toLocaleDateString() : '—'}</td>
+                        <td>{loan.returnDate ? new Date(loan.returnDate).toLocaleDateString() : '—'}</td>
                         <td>{loan.status}</td>
                         <td>{loan.penalty?.toFixed(2) || '0.00'} zł</td>
                         <td>
-                            {loan.status === 'reserved' && isUser() && (
+                            {loan.status === 'reserved' && userRole==="client" && (
                                 <CancelReservationButton
-                                    loanId={loan._id}
+                                    loanId={loan.id}
                                     onSuccess={() =>
                                         setLoans(loans.filter((l) => l._id !== loan._id))
                                     }
                                 />
                             )}
-                            {loan.status === 'reserved' && isLibrarian() && (
+                            {loan.status === 'reserved' && userRole==="librarian" && (
                                 <MarkLoanedButton
-                                    loanId={loan._id}
+                                    loanId={loan.id}
                                     onSuccess={fetchLoans}
                                 />
                             )}
-                            {loan.status === 'loaned' && !loan.prolonged && isLibrarian() && (
+                            {loan.status === 'loaned' && !loan.prolonged && userRole==="librarian" && (
                                 <ProlongLoanButton
-                                    loanId={loan._id}
+                                    loanId={loan.id}
                                     onSuccess={fetchLoans}
                                 />
                             )}
-                            {loan.status === 'loaned' && isLibrarian() && (
+                            {loan.status === 'loaned' && userRole==="librarian" && (
                                 <MarkReturned
-                                    loanId={loan._id}
+                                    loanId={loan.id}
                                     onSuccess={fetchLoans}
                                 />
                             )}

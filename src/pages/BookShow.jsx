@@ -62,11 +62,11 @@ const BookShow = () => {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                     <strong>Rok publikacji:</strong>
-                    <span>{book.year_of_publication}</span>
+                    <span>{book.yearOfPublication}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                     <strong>Autor:</strong>
-                    <span>{book.author ? `${book.author.first_name} ${book.author.last_name}` : "Brak danych"}</span>
+                    <span>{book.author ? `${book.author.firstName} ${book.author.lastName}` : "Brak danych"}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                     <strong>Wydawca:</strong>
