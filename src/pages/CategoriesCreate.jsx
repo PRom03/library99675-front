@@ -28,7 +28,7 @@ const CategoriesCreate = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api//categories', {
+            const response = await fetch('http://localhost:8080/api/categories/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

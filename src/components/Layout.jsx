@@ -20,9 +20,7 @@ const Layout = () => {
         }
         return false;
     }
- if (!token || isExpired(token)) {
-        return <Navigate to="/login" />;
-    }
+//tu warunek
 
     return (
         <>
@@ -32,7 +30,7 @@ const Layout = () => {
                     <span className="fs-5">Biblioteka online</span>
                 </Link>
 
-                <form className="d-flex ms-auto me-3" role="search" method="GET" action="/search">
+                <form className="d-flex ms-auto me-3" role="search" method="GET" action="/react/search">
                     <input
                         className="form-control me-2"
                         type="search"
@@ -56,11 +54,13 @@ const Layout = () => {
                     <Link to="/categories" className="btn btn-outline-light me-2">
                         Kategorie
                     </Link>
+                    {/*
                     <Link to="/recommended" className="btn btn-light text-dark me-2">
                         Dla Ciebie
                     </Link>
+                    */}
 
-                    {token ? (
+                    {!isExpired(token) ? (
                         <>
                             <Link to="/panel" className="btn btn-outline-light me-2">
                                 Panel

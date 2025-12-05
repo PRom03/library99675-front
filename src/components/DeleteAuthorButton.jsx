@@ -6,7 +6,7 @@ const DeleteAuthorButton = ({ authorId, onDeleted }) => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:8080/api/authors/${authorId}`, {
+            const res = await fetch(`http://localhost:8080/api/authors/${authorId}/delete`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

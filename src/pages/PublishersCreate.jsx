@@ -37,7 +37,7 @@ const PublishersCreate = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/publishers', {
+            const response = await fetch('http://localhost:8080/api/publishers/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

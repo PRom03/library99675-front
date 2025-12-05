@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {isAdmin} from "../components/checkRoles.jsx";
+import {checkRole} from "../components/checkRoles.jsx";
 import DeleteAuthorButton from "../components/DeleteAuthorButton.jsx";
 import DeleteCategoryButton from "../components/DeleteCategoryButton.jsx";
 
 const CategoriesIndex = () => {
     const [categories, setCategories] = useState([]);
+    const [userRole, setUserRole] = useState("");
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/categories');
+                const response = await fetch('http://localhost:8080/api/categories/');
                 if (!response.ok) {
                     throw new Error('Błąd podczas ładowania kategorii: ' + response.statusText);
                 }
@@ -20,13 +21,17 @@ const CategoriesIndex = () => {
                 console.error('Błąd podczas ładowania kategorii:', error);
             }
         };
-
+        const checkUserRole= async()=>{
+            const role=await checkRole();
+            setUserRole(role);
+        }
+        checkUserRole();
         fetchCategories();
     }, []);
     return (
         <>
             <h1>Lista kategorii</h1>
-            {isAdmin() && (
+            {userRole==="admin" && (
                 <Link to={`/categories/create`} className="btn btn-primary">Dodaj kategorię</Link>
 
             )}
@@ -39,19 +44,19 @@ const CategoriesIndex = () => {
                 </thead>
                 <tbody>
                 {categories.map((category) => (
-                    <tr key={category._id}>
+                    <tr key={category.id}>
                         <td>{category.name}</td>
 
-                        <td>{isAdmin() && (
-                            <Link to={`/categories/${category._id}/update`} className="btn btn-warning">Edytuj</Link>
+                        <td>{userRole==="admin" && (
+                            <Link to={`/categories/${category.id}/update`} className="btn btn-warning">Edytuj</Link>
 
                         )}
-                            {isAdmin() && (
+                            {userRole==="admin" && (
                                 <DeleteCategoryButton
-                                    categoryId={category._id}
+                                    categoryId={category.id}
                                     onDeleted={() =>
                                         setCategories((prev) =>
-                                            prev.filter((a) => a._id !== category._id)
+                                            prev.filter((a) => a.id !== category.id)
                                         )
                                     }
                                 />

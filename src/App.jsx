@@ -43,16 +43,16 @@ function App() {
                     <Route path="loans" element={<LoansIndex />} />
                     <Route path="me/edit" element={<EditProfile />} />
                     <Route path="authors/create" element={<AuthorsCreate />} />
-                    <Route path="authors/:_id/update" element={<AuthorsUpdate />} />
-                    <Route path="publishers/:_id/update" element={<PublishersUpdate />} />
-                    <Route path="categories/:_id/update" element={<CategoriesUpdate />} />
+                    <Route path="authors/:id/update" element={<AuthorsUpdate />} />
+                    <Route path="publishers/:id/update" element={<PublishersUpdate />} />
+                    <Route path="categories/:id/update" element={<CategoriesUpdate />} />
                     <Route path="search" element={<SearchPage />} />
                     <Route path="recommended" element={<RecommendedBooks />} />/
                     <Route path="books" element={<BooksIndex />} />
                     <Route path="authors" element={<AuthorsIndex />} />
                     <Route path="publishers" element={<PublishersIndex />} />
                     <Route path="books/:isbn" element={<BookShow />} />
-                    <Route path="authors/:_id" element={<AuthorShow />} />
+                    <Route path="authors/:id" element={<AuthorShow />} />
                     <Route path="categories" element={<CategoriesIndex />} />
                 </Route>
                 <Route path="login" element={<LoginPage />} />

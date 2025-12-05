@@ -7,7 +7,7 @@ const BooksCreate = () => {
     const [publisherId, setPublisherId] = useState('');
     const [isbn, setIsbn] = useState('');
     const [available, setAvailable] = useState('');
-    const [year_of_publication, set_year_of_publication] = useState('');
+    const [yearOfPublication, setYearOfPublication] = useState('');
     const [categoryId, setCategoryId] = useState('');
     const [authors, setAuthors] = useState([]);
     const [publishers, setPublishers] = useState([]);
@@ -27,9 +27,9 @@ const BooksCreate = () => {
             newErrors.title = 'Tytuł musi mieć co najmniej 2 znaki.';
         }
 
-        const year = parseInt(year_of_publication, 10);
-        if (!year_of_publication || isNaN(year) || year < 1500 || year > 2025) {
-            newErrors.year_of_publication = 'Rok wydania musi być liczbą od 1500 do 2025.';
+        const year = parseInt(yearOfPublication, 10);
+        if (!yearOfPublication || isNaN(year) || year < 1500 || year > 2025) {
+            newErrors.yearOfPublication = 'Rok wydania musi być liczbą od 1500 do 2025.';
         }
 
         const availableInt = parseInt(available, 10);
@@ -57,9 +57,9 @@ const BooksCreate = () => {
         const fetchData = async () => {
             try {
                 const [authorsRes, publishersRes, categoriesRes] = await Promise.all([
-                    fetch('http://localhost:8080/api/authors'),
-                    fetch('http://localhost:8080/api/publishers'),
-                    fetch('http://localhost:8080/api/categories'),
+                    fetch('http://localhost:8080/api/authors/'),
+                    fetch('http://localhost:8080/api/publishers/'),
+                    fetch('http://localhost:8080/api/categories/'),
                 ]);
 
                 const authorsData = await authorsRes.json();
@@ -84,15 +84,15 @@ const BooksCreate = () => {
             title: title,
             isbn: isbn,
             available: parseInt(available),
-            year_of_publication: parseInt(year_of_publication),
-            author: authorId,
-            publisher: publisherId,
-            category: categoryId
+            yearOfPublication: parseInt(yearOfPublication),
+            authorId: authorId,
+            publisherId: publisherId,
+            categoryId: categoryId
         };
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/books', {
+            const response = await fetch('http://localhost:8080/api/books/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const BooksCreate = () => {
             setPublisherId('');
             setIsbn('');
             setAvailable('');
-            set_year_of_publication('');
+            setYearOfPublication('');
             setCategoryId('');
             navigate(`/books/${isbn}`);
 
@@ -151,12 +151,12 @@ const BooksCreate = () => {
                 <label className="form-label">Rok wydania</label>
                 <input
                     type="number"
-                    className={`form-control ${errors.year_of_publication ? 'is-invalid' : ''}`}
-                    value={year_of_publication}
-                    onChange={(e) => set_year_of_publication(e.target.value)}
+                    className={`form-control ${errors.yearOfPublication ? 'is-invalid' : ''}`}
+                    value={yearOfPublication}
+                    onChange={(e) => setYearOfPublication(e.target.value)}
                 />
-                {errors.year_of_publication && (
-                    <div className="invalid-feedback">{errors.year_of_publication}</div>
+                {errors.yearOfPublication && (
+                    <div className="invalid-feedback">{errors.yearOfPublication}</div>
                 )}
             </div>
 
@@ -180,8 +180,8 @@ const BooksCreate = () => {
                 >
                     <option value="">-- wybierz autora --</option>
                     {authors.map((author) => (
-                        <option key={author._id} value={author._id}>
-                            {author.first_name} {author.last_name}
+                        <option key={author.id} value={author.id}>
+                            {author.firstName} {author.lastName}
                         </option>
                     ))}
                 </select>
@@ -197,7 +197,7 @@ const BooksCreate = () => {
                 >
                     <option value="">-- wybierz wydawcę --</option>
                     {publishers.map((publisher) => (
-                        <option key={publisher._id} value={publisher._id}>
+                        <option key={publisher.id} value={publisher.id}>
                             {publisher.name}
                         </option>
                     ))}
@@ -214,7 +214,7 @@ const BooksCreate = () => {
                 >
                     <option value="">-- wybierz kategorię --</option>
                     {categories.map((category) => (
-                        <option key={category._id} value={category._id}>
+                        <option key={category.id} value={category.id}>
                             {category.name}
                         </option>
                     ))}

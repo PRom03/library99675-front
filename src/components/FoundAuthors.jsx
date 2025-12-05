@@ -1,10 +1,17 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
-import {isAdmin} from '../components/checkRoles.jsx'
+import {checkRole} from '../components/checkRoles.jsx'
 import DeleteAuthorButton from "../components/DeleteAuthorButton.jsx";
 
 const FoundAuthors = ({authors,onDelete}) => {
-
+    const [userRole, setUserRole] = useState("");
+    useEffect(() => {
+        const checkUserRole= async()=>{
+            const role=await checkRole();
+            setUserRole(role);
+        }
+        checkUserRole();
+    })
     return (
         <>
             <h1>Lista autorów</h1>
@@ -17,18 +24,18 @@ const FoundAuthors = ({authors,onDelete}) => {
                 </thead>
                 <tbody>
                 {authors.map((author) => (
-                    <tr key={author._id}>
-                        <td>{author.first_name} {author.last_name}</td>
+                    <tr key={author.id}>
+                        <td>{author.firstName} {author.lastName}</td>
                         <td>
-                            <Link to={`/authors/${author._id}`} className="btn btn-primary">Zobacz</Link>
-                            {isAdmin() && (
-                                <Link to={`/authors/${author._id}/update`} className="btn btn-warning">Edytuj</Link>
+                            <Link to={`/authors/${author.id}`} className="btn btn-primary">Zobacz</Link>
+                            {userRole==="admin" && (
+                                <Link to={`/authors/${author.id}/update`} className="btn btn-warning">Edytuj</Link>
 
                             )}
-                            {isAdmin() && (
+                            {userRole==="admin" && (
                                 <DeleteAuthorButton
-                                    authorId={author._id}
-                                    onDeleted={() => onDelete?.(author._id)
+                                    authorId={author.id}
+                                    onDeleted={() => onDelete?.(author.id)
 
                                     }
                                 />

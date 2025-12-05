@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const AuthorsUpdate = () => {
-    const { _id } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [firstName, setFirstName] = useState('');
@@ -22,13 +22,11 @@ const AuthorsUpdate = () => {
             newErrors.lastName = 'Nazwisko musi mieć co najmniej 2 litery (tylko litery).';
         }
 
-        // Rok urodzenia: liczba 1800-2025
         const year = parseInt(birthYear, 10);
         if (!birthYear || isNaN(year) || year < 1800 || year > 2025) {
             newErrors.birthYear = 'Rok urodzenia musi być liczbą z zakresu 1800-2025.';
         }
 
-        // Źródło obrazu: pusty lub poprawny URL (prosty regex)
         if (imageSource) {
             const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/i;
             if (!urlRegex.test(imageSource)) {
@@ -36,7 +34,6 @@ const AuthorsUpdate = () => {
             }
         }
 
-        // Notka biograficzna: min 10 znaków
         if (!briefBio || briefBio.length < 10) {
             newErrors.briefBio = 'Notka biograficzna musi mieć co najmniej 10 znaków.';
         }
@@ -49,15 +46,20 @@ const AuthorsUpdate = () => {
     useEffect(() => {
         const fetchAuthor = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/authors/${_id}`);
+                const response = await fetch(`http://localhost:8080/api/authors/${id}`,
+                    {
+                        method:'GET',
+                        "Content-Type":'application/json',
+                        Authorization:`Bearer ${localStorage.getItem('token')}`,
+                    });
                 if (!response.ok) throw new Error('Błąd podczas ładowania autora');
                 const author = await response.json();
 
-                setFirstName(author.first_name || '');
-                setLastName(author.last_name || '');
+                setFirstName(author.firstName || '');
+                setLastName(author.lastName || '');
                 setBirthYear(author.birthyear || 0);
-                setImageSource(author.image_source || '');
-                setBriefBio(author.brief_bio || '');
+                setImageSource(author.imageSource || '');
+                setBriefBio(author.briefBio || '');
 
             } catch (error) {
                 console.error('Błąd podczas pobierania autora:', error);
@@ -65,22 +67,22 @@ const AuthorsUpdate = () => {
         };
 
         fetchAuthor();
-    }, [_id]);
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(!validate()) return;
         const updatedAuthor = {
-            first_name: firstName,
-            last_name: lastName,
+            firstName: firstName,
+            lastName: lastName,
             birthyear: parseInt(birthYear),
-            image_source: imageSource,
-            brief_bio: briefBio
+            imageSource: imageSource,
+            briefBio: briefBio
         };
 
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:8080/api/authors/${_id}`, {
+            const response = await fetch(`http://localhost:8080/api/authors/${id}/update`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +92,7 @@ const AuthorsUpdate = () => {
             });
 
             if (!response.ok) throw new Error('Błąd podczas zapisu');
-            navigate(`/authors/${_id}`);
+            navigate(`/authors/${id}`);
         } catch (error) {
             console.error('Błąd podczas aktualizacji książki:', error);
         }

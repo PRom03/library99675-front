@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const CategoriesUpdate = () => {
-    const { _id } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [name, setName] = useState('');
@@ -26,7 +26,7 @@ const CategoriesUpdate = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/categories/${_id}`);
+                const response = await fetch(`http://localhost:8080/api/categories/${id}`);
                 if (!response.ok) throw new Error('Błąd podczas ładowania kategorii');
                 const category = await response.json();
 
@@ -38,7 +38,7 @@ const CategoriesUpdate = () => {
         };
 
         fetchCategory();
-    }, [_id]);
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,7 +49,7 @@ if(!validate()) return;
 
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:8080/api/categories/${_id}`, {
+            const response = await fetch(`http://localhost:8080/api/categories/${id}/update`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

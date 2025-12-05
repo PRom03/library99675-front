@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
-import {isAdmin} from "../components/checkRoles.jsx";
+import {checkRole} from "../components/checkRoles.jsx";
 import DeleteCategoryButton from "../components/DeleteCategoryButton.jsx";
 import DeletePublisherButton from "../components/DeletePublisherButton.jsx";
 
 const FoundPublishers = ({publishers,onDelete}) => {
-
+    const [userRole, setUserRole] = useState("");
+    useEffect(() => {
+        const checkUserRole= async()=>{
+            const role=await checkRole();
+            setUserRole(role);
+        }
+        checkUserRole();
+    })
     return (
         <>
             <h1>Lista wydawców</h1>
@@ -17,18 +24,18 @@ const FoundPublishers = ({publishers,onDelete}) => {
                 </thead>
                 <tbody>
                 {publishers.map((publisher) => (
-                    <tr key={publisher._id}>
+                    <tr key={publisher.id}>
                         <td>{publisher.name}</td>
                         <td>
-                            <Link to={`/publishers/${publisher._id}`} className="btn btn-primary">Zobacz</Link>
-                            {isAdmin() && (
-                                <Link to={`/publishers/${publisher._id}/update`} className="btn btn-warning">Edytuj</Link>
+                            <Link to={`/publishers/${publisher.id}`} className="btn btn-primary">Zobacz</Link>
+                            {userRole==="admin" && (
+                                <Link to={`/publishers/${publisher.id}/update`} className="btn btn-warning">Edytuj</Link>
 
                             )}
-                            {isAdmin() && (
+                            {userRole==="admin" && (
                                 <DeletePublisherButton
-                                    publisherId={publisher._id}
-                                    onDeleted={() => onDelete?.(publisher._id)
+                                    publisherId={publisher.id}
+                                    onDeleted={() => onDelete?.(publisher.id)
 
                                     }
                                 />

@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
-import {isAdmin} from "../components/checkRoles.jsx";
+import {checkRole} from "../components/checkRoles.jsx";
 import DeleteAuthorButton from "../components/DeleteAuthorButton.jsx";
 import DeleteCategoryButton from "../components/DeleteCategoryButton.jsx";
 
 const FoundCategories = ({categories,onDelete}) => {
-
+    const [userRole, setUserRole] = useState("");
+    useEffect(() => {
+        const checkUserRole= async()=>{
+            const role=await checkRole();
+            setUserRole(role);
+        }
+        checkUserRole();
+    })
     return (
         <>
             <h1>Lista kategorii</h1>
@@ -18,17 +25,17 @@ const FoundCategories = ({categories,onDelete}) => {
                 </thead>
                 <tbody>
                 {categories.map((category) => (
-                    <tr key={category._id}>
+                    <tr key={category.id}>
                         <td>{category.name}</td>
 
-                        <td>{isAdmin() && (
-                            <Link to={`/categories/${category._id}/update`} className="btn btn-warning">Edytuj</Link>
+                        <td>{userRole==="admin" && (
+                            <Link to={`/categories/${category.id}/update`} className="btn btn-warning">Edytuj</Link>
 
                         )}
-                            {isAdmin() && (
+                            {userRole==="admin" && (
                                 <DeleteCategoryButton
-                                    categoryId={category._id}
-                                    onDeleted={() => onDelete?.(category._id)
+                                    categoryId={category.id}
+                                    onDeleted={() => onDelete?.(category.id)
 
                                     }
                                 />

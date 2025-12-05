@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const PublishersUpdate = () => {
-    const { _id } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [name, setName] = useState('');
@@ -33,7 +33,7 @@ const PublishersUpdate = () => {
     useEffect(() => {
         const fetchPublisher = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/publishers/${_id}`);
+                const response = await fetch(`http://localhost:8080/api/publishers/${id}`);
                 if (!response.ok) throw new Error('Błąd podczas ładowania wydawcy');
                 const publisher = await response.json();
 
@@ -46,7 +46,7 @@ const PublishersUpdate = () => {
         };
 
         fetchPublisher();
-    }, [_id]);
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -58,7 +58,7 @@ if(!validate()) return;
 
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:8080/api/publishers/${_id}`, {
+            const response = await fetch(`http://localhost:8080/api/publishers/${id}/update`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

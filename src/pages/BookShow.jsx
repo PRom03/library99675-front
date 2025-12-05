@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { isAdmin, isUser } from "../components/checkRoles.jsx";
+import { checkRole } from "../components/checkRoles.jsx";
 import DeleteBookButton from "../components/DeleteBookButton.jsx";
 import ReserveBookButton from "../components/ReserveBookButton.jsx";
 
@@ -9,6 +9,7 @@ const BookShow = () => {
 
     const [book, setBook] = useState(null);
     const [reservedIsbns, setReservedIsbns] = useState([]);
+    const [userRole, setUserRole] = useState("");
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -41,7 +42,11 @@ const BookShow = () => {
                 console.error('Błąd podczas ładowania wypożyczeń:', error);
             }
         };
-
+        const checkUserRole= async()=>{
+            const role=await checkRole();
+            setUserRole(role);
+        }
+        checkUserRole();
         fetchLoans();
         fetchBook();
     }, [isbn]);
@@ -83,15 +88,15 @@ const BookShow = () => {
 
                 <div style={{ marginTop: "20px" }}>
 
-                    {isAdmin() && (
+                    {userRole==="admin" && (
                         <Link to={`/books/${book.isbn}/update`} className="btn btn-warning" style={{ marginRight: '8px' }}>
                             Edytuj
                         </Link>
                     )}
-                    {isUser() && !reservedIsbns.includes(book.isbn) && (
+                    {userRole==="client" && !reservedIsbns.includes(book.isbn) && (
                         <ReserveBookButton isbn={book.isbn} />
                     )}
-                    {isAdmin() && (
+                    {userRole==="admin" && (
                         <DeleteBookButton
                             isbn={book.isbn}
                             onDeleted={() => setBook(null)}

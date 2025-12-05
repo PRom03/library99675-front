@@ -6,7 +6,7 @@ const DeleteBookButton = ({ isbn, onDeleted }) => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:8080/api/books/${isbn}`, {
+            const res = await fetch(`http://localhost:8080/api/books/${isbn}/delete`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

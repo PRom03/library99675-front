@@ -44,16 +44,16 @@ const AuthorsCreate = () => {
         e.preventDefault();
         if(!validate()) return;
         const newAuthor = {
-            first_name: firstName,
-            last_name: lastName,
+            firstName: firstName,
+            lastName: lastName,
             birthyear: parseInt(birthYear),
-            image_source: imageSource,
-            brief_bio: briefBio
+            imageSource: imageSource,
+            briefBio: briefBio
         };
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/authors', {
+            const response = await fetch('http://localhost:8080/api/authors/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
